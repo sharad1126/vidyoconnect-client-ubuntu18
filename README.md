@@ -3,7 +3,7 @@ The updated package for vidyo client that runs on ubuntu18
 
 # How to install 
 clone the repo and download the directory /vidyobuild
-run
+## run
 ```
 dpkg-deb -b vidyobuild vidyodesktop-custom.deb
 # and then 
