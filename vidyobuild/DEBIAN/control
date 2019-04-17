@@ -1,0 +1,22 @@
+Package: vidyodesktop
+Version: 3.6.3-017
+Section: web 
+Priority: optional
+Architecture: amd64
+Essential: no
+Depends: libxss1,libaudio2,libasound2,libqt4-network
+Installed-Size: 12000
+Recommends: zenity
+Suggests: qt4-qtconfig
+Maintainer: Vidyo Inc. <VidyoInfo@vidyo.com>
+Description: Vidyo Desktop Client
+ VidyoDesktop software client delivers low latency HD-quality video for
+ natural communications, and single-click simplicity with an intuitive
+ graphical user interface. Vidyo(TM) puts the productivity power of video
+ conferencing into the hands of users.
+ .
+ VidyoDesktop is a highly flexible application with data sharing options
+ and customizable personal screen layouts, including preferred speaker and
+ continuous presence formats. VidyoDesktop integrates seamlessly with
+ VidyoRoom(TM), VidyoPanorama, VidyoMobile systems, traditional H.323 and
+ SIP endpoints using the VidyoGateway(TM).

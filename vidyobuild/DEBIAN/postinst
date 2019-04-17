@@ -1,0 +1,15 @@
+#!/bin/sh
+
+mode="$1"
+active=`ps axo comm=Command | grep VidyoDesktop$`
+debian=`cat /etc/debian_version`
+case "$mode" in
+configure)
+	/sbin/ldconfig
+	if test ! -z "$active" ; then
+		killall -s HUP VidyoDesktop 2>/dev/null
+	fi
+	;;
+esac
+exit 0
+		

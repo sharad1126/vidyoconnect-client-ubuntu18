@@ -1,0 +1,86 @@
+#!/bin/bash
+# version 0.2
+
+export EXEC="VidyoDesktop"
+
+vidyo() {
+	audioflag=""
+	keys=""
+	if test -x /usr/bin/unity ; then
+		keys=`gsettings get com.canonical.Unity.Panel systray-whitelist 2>/dev/null` ; fi
+	if test ! -z "$keys" ; then
+		case "$keys" in
+		*'all'*|*'VidyoDesktop'*)
+			;;
+		*)
+			new=""
+			for key in ${keys:1:-1} ; do
+				key=${key:1:-1}
+				key=${key//\`/}
+				new="$new'$key',"
+			done
+			keys="[$new'VidyoDesktop']"
+			keys=`echo $keys | sed -e "s/''/'/g"`
+			gsettings set  com.canonical.Unity.Panel systray-whitelist  "$keys" 2>&1 >/dev/null
+			;;		
+		esac
+	fi
+
+	if [ -x /opt/vidyo/VidyoDesktop/RenderCheck ] ; then
+		if [ -x /usr/bin/zenity ] ; then
+			/opt/vidyo/VidyoDesktop/RenderCheck
+			case "$?" in
+			0)
+				;;
+			1)
+				zenity --warning --text="Direct Rendering not detected.\nAudio only mode enabled."
+				audioflag="-AudioOnly"
+				;;
+			esac
+		fi
+	fi
+
+	if [ ! -d $HOME/.vidyo/VidyoDesktop ]; then
+		mkdir -p $HOME/.vidyo/VidyoDesktop
+	fi
+
+	if [ ! -f $HOME/.vidyo/VidyoDesktop/ca-certificates.crt ]; then
+		if [ -f /etc/ssl/certs/ca-certificates.crt ]; then	
+			ln -s /etc/ssl/certs/ca-certificates.crt $HOME/.vidyo/VidyoDesktop/ca-certificates.crt
+		elif  [ -f /etc/pki/tls/certs/ca-bundle.crt ]; then
+			ln -s /etc/pki/tls/certs/ca-bundle.crt $HOME/.vidyo/VidyoDesktop/ca-certificates.crt
+		fi
+	fi
+
+	option=""
+	if test ! -f /etc/fedora-release ; then
+		option="-Activate" ; fi
+
+	/opt/vidyo/VidyoDesktop/$EXEC $option $audioflag $@
+}
+
+debian6=`cat /etc/issue | grep "Debian GNU/Linux 6"`
+if test ! -z "$debian6" ; then
+	export VIDYO_AUDIO_FRAMEWORK=ALSA
+	export EXEC="VidyoDesktop-deb6"
+else
+	export PULSE_LATENCY_MSEC=60
+fi
+
+if test -d /opt/vidyo/VidyoDesktop/lic ; then
+	if test ! -f /opt/vidyo/VidyoDesktop/lic/$USER ; then
+		set -e
+		zenity --text-info --title "VidyoDesktop" --filename=/opt/vidyo/VidyoDesktop/license.txt --height=400 --width=540
+		set +e
+		touch /opt/vidyo/VidyoDesktop/lic/$USER
+	fi
+fi
+
+case "$@" in
+-AutoStart)
+	(sleep 8 ; vidyo $@) 2>/dev/null >/dev/null & 
+	;;
+*)
+	vidyo $@
+	;;
+esac

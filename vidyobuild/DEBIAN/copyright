@@ -1,0 +1,11 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=59
+Name: vidyodesktop
+Maintainer: Vidyo Inc. <VidyoInfo@vidyo.com>
+
+Files: *
+Copyright: 2006-2012, Vidyo Inc
+License: Vidyo, Inc
+ This product is covered by U.S. Pat. Nos. 7,593,032 B3 and 7,643,560,
+ as well as additional international patents or pending U.S. or
+ international patent applications owned by Vidyo, Inc.
+

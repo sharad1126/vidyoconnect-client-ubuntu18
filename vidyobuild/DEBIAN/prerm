@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+case "$1" in
+remove|deconfigure)
+    rm -rf /opt/vidyo/VidyoDesktop/lic
+    ;;
+esac
+exit 0
